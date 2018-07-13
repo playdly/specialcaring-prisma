@@ -1,0 +1,14 @@
+# import User from './generated/prisma.graphql'
+# import Person from './generated/prisma.graphql'
+
+type Query {
+  patients(searchString: String): [Person!]!
+  user(id: ID!): User
+}
+
+type Mutation {
+  registerPatient(authorId: ID!, title: String!, content: String!): Post
+  publish(id: ID!): Post
+  deletePost(id: ID!): Post
+  signup(name: String!): User!
+}

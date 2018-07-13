@@ -1,0 +1,136 @@
+type User {
+  id: ID! @unique
+  username: String!
+  password: String!
+  profiles: [Profile!]!
+  active:  Boolean! @default(value: "false")
+  lastLoginDate: String!
+  dateCreated: String!
+}
+
+type Person {
+  id: ID! @unique
+  firstName: String!
+  lastName: String!
+  dob: String
+  address: String
+  phone: String
+  cell: String
+  email: String
+  placeOfBirth: String
+  healthCardNumber: String
+  emergencyContacts: [Person!]!
+  loginUser: User
+}
+
+type Profile {
+  id: ID! @unique
+  name: String!
+  privileges: [String!]!
+}
+
+type DrugSupplement {
+  id: ID! @unique
+  name: String!
+  description: String
+  type: Int
+  activeIngredient: String
+  unit: String
+  concentration: Int
+  presentation: String
+  quantity: Int
+}
+
+type IdentificationCard {
+  id: ID! @unique
+  type: Int
+  owner: Person @relation(name: "IdentificationCardOwner")
+  physician: Person @relation(name: "IdentificationCardPhysician")
+  emergencyContacts: [Person!]! @relation(name: "IdentificationCardContacts")
+}
+
+type MedicalChart {
+  id: ID! @unique
+  patient: Person @relation(name: "MedicalChartPatient")
+  primaryPhysician: Person @relation(name: "MedicalChartPrimaryPhysician")
+  secondaryPhysician: Person @relation(name: "MedicalChartSecondaryPhysician")
+  preferredHospital: String
+  primaryInsuranceProvider: String
+  primaryInsurancePolicy_number: String
+  secondaryInsuranceProvider: String
+  secondaryInsurancePolicy_number: String
+  medicalConditions: [String!]
+  allergies: [String!]
+  pastSurgeries: [String!]
+  height: [String!]
+  weight: [String!]
+  bloodType: String
+  needsGlasses: Boolean
+  needsDentures: Boolean
+  needsHearing_aids: Boolean
+  needsOxygen: Boolean
+  needsWalker: Boolean
+  emergencyContacts: [Person!]! @relation(name: "MedicalChartContacts")
+}
+
+type MedicalLogEntry {
+  id: ID! @unique
+  date: String!
+  symptomIssue: String
+  clinicDoctorSeen: String
+  notesTestsProcedures: String
+  instructions: String
+}
+
+
+type MedicalLog {
+  id: ID! @unique
+  date: String
+  owner: Person
+  entries: [MedicalLogEntry!]!
+}
+
+type MedicationListEntry {
+  id: ID! @unique
+  drugSupplement: DrugSupplement!
+  startDate: String!
+  endDate: String!
+  expiryDate: String!
+  doseInstructions: String!
+  prescibingPhysician: Person @relation(name: "MedicationListEntryPrescribingPhysician")
+  purpose: String
+  patient: Person @relation(name: "MedicationListEntryPatient")
+}
+
+type MedicationList {
+  id: ID! @unique
+  entries: [MedicationListEntry!]!
+  patient: Person
+}
+
+type MedicationScheduleEntry {
+  id: ID! @unique
+  drugSupplement: DrugSupplement!
+  daysOfWeek: Int
+  time: String
+  status: Int
+  patient: Person
+  notes: String
+  instructions: String
+}
+
+type MedicationSchedule {
+  id: ID! @unique
+  entries: [MedicationScheduleEntry!]!
+  startDate: String
+  endDate: String
+  expiryDate: String!
+  doseInstructions: String
+  prescribingPhysician: Person @relation(name: "MedicationSchedulePrescribingPhysician")
+  purpose: String
+  patient: Person @relation(name: "MedicationSchedulePatient")
+}
+
+
+
+
